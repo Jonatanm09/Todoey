@@ -9,7 +9,7 @@
 import UIKit
 
 class TodoListViewController: UITableViewController {
-    let itemArray =  ["Comprar", "Viajar", "Beber"]
+    var itemArray =  ["Comprar", "Viajar", "Beber"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,8 +20,10 @@ class TodoListViewController: UITableViewController {
         
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
         cell.textLabel?.text = itemArray[indexPath.row]
+        
         return cell
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -34,9 +36,37 @@ class TodoListViewController: UITableViewController {
              tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
        tableView.deselectRow(at: indexPath, animated: true)
+    
         
         
     }
+    //MARK-- Add new items
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
+        
+        let alert = UIAlertController(title: "Add New Todo Item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            if textField.text != nil{
+                self.itemArray.append(textField.text!)
+                self.tableView.reloadData()
+            }
+            else {
+             
+            }
+         
+        }
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
+            //What will happen when the user click
+            alert.addAction(action)
+            present(alert,animated: true, completion: nil)
+        }
+    }
+    
 
-}
 
